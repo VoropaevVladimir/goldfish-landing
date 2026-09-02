@@ -1,0 +1,43 @@
+---
+import type { PhotoSpec } from '../data/content';
+
+interface Props {
+  photo: PhotoSpec;
+  /** CSS aspect-ratio, например "4 / 3". Держит раскладку до появления фото. */
+  ratio?: string;
+  class?: string;
+  /** hero и другие фото выше сгиба грузим приоритетно, остальные — lazy. */
+  priority?: boolean;
+  sizes?: string;
+  /** Плавное появление при попадании в viewport (см. scripts/reveal.ts). */
+  reveal?: boolean;
+}
+
+const { photo, ratio, class: className, priority = false, sizes, reveal = false } = Astro.props;
+---
+
+<figure
+  class:list={['photo', className]}
+  style={ratio ? `aspect-ratio:${ratio}` : undefined}
+  data-reveal={reveal ? true : undefined}
+>
+  {
+    photo.src ? (
+      <picture>
+        {photo.srcWebp && <source srcset={photo.srcWebp} type="image/webp" />}
+        <img
+          src={photo.src}
+          alt={photo.alt}
+          sizes={sizes}
+          loading={priority ? 'eager' : 'lazy'}
+          decoding={priority ? 'sync' : 'async'}
+          fetchpriority={priority ? 'high' : 'auto'}
+        />
+      </picture>
+    ) : (
+      <div class="photo__placeholder" role="img" aria-label={photo.alt}>
+        <span class="photo__spec">{photo.spec}</span>
+      </div>
+    )
+  }
+</figure>

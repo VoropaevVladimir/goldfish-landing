@@ -1,0 +1,52 @@
+---
+import Icon from './Icon.astro';
+import { advantages } from '../data/content';
+---
+
+<section class="section" id="why" aria-labelledby="why-title">
+  <div class="container">
+    <h2 class="kicker why__title" id="why-title">Почему «Голдфиш»</h2>
+
+    <ul class="why__grid">
+      {
+        advantages.map((item) => (
+          <li class="why__item" data-reveal>
+            <span class="icon-badge">
+              <Icon name={item.icon} size={22} />
+            </span>
+            <h3 class="h3">{item.title}</h3>
+            <p>{item.text}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  /* Заголовок секции в макете набран как kicker — сохраняем визуально,
+     но в разметке это полноценный h2. */
+  .why__title { margin-block-end: clamp(24px, 2.6vw, 34px); }
+
+  .why__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--gap-cols);
+  }
+
+  .why__item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--stack-md);
+  }
+
+  .why__item p { color: var(--color-ink-muted); }
+
+  @media (max-width: 1024px) {
+    .why__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  @media (max-width: 700px) {
+    .why__grid { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>

@@ -1,0 +1,123 @@
+---
+import Photo from './Photo.astro';
+import { products } from '../data/content';
+---
+
+<section class="section" id="products" aria-labelledby="products-title">
+  <div class="container">
+    <div class="section-head">
+      <div class="stack stack--sm">
+        <span class="kicker">Продукция</span>
+        <h2 class="h2" id="products-title">Наш ассортимент</h2>
+      </div>
+      <span class="section-head__rule" aria-hidden="true"></span>
+    </div>
+
+    <ul class="products">
+      {
+        products.map((product) => (
+          <li class="products__cell" data-reveal>
+            <a
+              class="card"
+              href={product.href}
+              aria-label={`${product.name} — узнать цену`}
+            >
+              <Photo
+                photo={product.photo}
+                ratio="4 / 3"
+                class="card__photo"
+                sizes="(max-width: 700px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              />
+              <div class="card__body">
+                <h3 class="h3">{product.name}</h3>
+                <p class="card__text">{product.description}</p>
+                <span class="btn btn--outline card__btn">Узнать цену на «{product.name}»</span>
+              </div>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  /* Карточки разделены линиями, а не воздухом: зазор 2px на тёмной подложке. */
+  .products {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--gap-hairline);
+    background: var(--color-line);
+    border: var(--line-w) solid var(--color-line);
+  }
+
+  .products__cell {
+    display: flex;
+    background: var(--color-surface);
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    inline-size: 100%;
+    color: inherit;
+  }
+
+  /* :global — scoped-атрибут Astro не попадает на корневой элемент <Photo>. */
+  :global(.card__photo img),
+  :global(.card__photo .photo__placeholder) {
+    transition: transform var(--dur-slow) var(--ease);
+  }
+
+  .card:hover :global(.card__photo img),
+  .card:hover :global(.card__photo .photo__placeholder) {
+    transform: scale(1.04);
+  }
+
+  .card__body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--stack-sm);
+    flex: 1;
+    padding: clamp(16px, 1.6vw, 22px);
+  }
+
+  .card__text {
+    flex: 1;
+    color: var(--color-ink-muted);
+  }
+
+  .card__btn {
+    margin-block-start: 6px;
+    /* Кнопка проявляется на hover, но остаётся видимой всегда:
+       на тач-устройствах hover-состояния нет. */
+    transition:
+      background-color var(--dur) var(--ease),
+      color var(--dur) var(--ease),
+      border-color var(--dur) var(--ease);
+  }
+
+  .card:hover .card__btn {
+    background: var(--color-ink);
+    color: #fff;
+  }
+
+  .card:focus-visible {
+    outline: var(--line-w) solid var(--color-focus);
+    outline-offset: -4px;
+  }
+
+  @media (max-width: 1024px) {
+    .products { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  @media (max-width: 700px) {
+    .products { grid-template-columns: minmax(0, 1fr); }
+    .card__btn {
+      inline-size: 100%;
+      justify-content: center;
+      min-block-size: 48px;
+    }
+  }
+</style>

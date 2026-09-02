@@ -1,0 +1,135 @@
+---
+import Photo from './Photo.astro';
+import { site } from '../data/site';
+import { heroPhoto } from '../data/content';
+---
+
+<section class="hero" id="hero" aria-labelledby="hero-title">
+  <div class="hero__media" data-parallax>
+    <Photo photo={heroPhoto} class="photo--cover" priority />
+  </div>
+  <div class="hero__scrim" aria-hidden="true"></div>
+
+  <div class="hero__content container">
+    <div class="hero__text">
+      <span class="kicker hero__kicker">{site.kicker}</span>
+      <h1 class="h1 hero__title" id="hero-title">{site.name}</h1>
+      <p class="lead hero__lead">{site.tagline}</p>
+      <p class="hero__body">
+        Коптим сами — от отбора сырья до отгрузки, без посредников.
+        Поставляем оптом: от пробной партии до регулярных поставок.
+      </p>
+      <div class="hero__actions">
+        <a class="btn btn--primary" href="#products">Смотреть продукцию</a>
+        <a class="btn btn--outline hero__btn-outline" href="#contacts">Связаться с нами</a>
+      </div>
+      <span class="kicker hero__badge">{site.heroBadge}</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-block-size: clamp(520px, 78vh, 760px);
+    overflow: hidden;
+    background: var(--color-ink);
+  }
+
+  /* Фон уезжает медленнее контента: сдвиг по transform, а не background-position. */
+  .hero__media {
+    position: absolute;
+    inset-block-start: -22%;
+    inset-inline: 0;
+    block-size: 122%;
+    will-change: transform;
+  }
+
+  /* Тёмная маска слева — чтобы текст читался на фотографии. */
+  .hero__scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      100deg,
+      rgba(9, 18, 30, 0.92) 0%,
+      rgba(9, 18, 30, 0.78) 34%,
+      rgba(9, 18, 30, 0.34) 62%,
+      rgba(9, 18, 30, 0.08) 100%
+    );
+  }
+
+  .hero__content {
+    position: relative;
+    z-index: 1;
+    padding-block: clamp(56px, 8vh, 96px);
+  }
+
+  .hero__text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: clamp(14px, 1.6vw, 20px);
+    max-inline-size: 660px;
+    color: var(--color-dark-text);
+  }
+
+  .hero__kicker,
+  .hero__badge { color: rgba(238, 242, 246, 0.72); }
+
+  .hero__title { color: #fff; }
+
+  .hero__lead { color: rgba(238, 242, 246, 0.92); }
+
+  .hero__body {
+    max-inline-size: 46ch;
+    color: rgba(238, 242, 246, 0.8);
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-block-start: 4px;
+  }
+
+  .hero__btn-outline {
+    --btn-fg: var(--color-dark-text);
+    --btn-bd: var(--color-dark-text);
+  }
+  .hero__btn-outline:hover {
+    --btn-bg: var(--color-dark-text);
+    --btn-fg: var(--color-dark-bg);
+  }
+
+  .hero .btn--primary {
+    --btn-bg: #fff;
+    --btn-fg: var(--color-ink);
+    --btn-bd: #fff;
+  }
+  .hero .btn--primary:hover {
+    --btn-bg: var(--color-accent);
+    --btn-bd: var(--color-accent);
+    --btn-fg: #fff;
+  }
+
+  @media (max-width: 700px) {
+    .hero { min-block-size: auto; }
+    .hero__content { padding-block: 56px 48px; }
+    .hero__actions { inline-size: 100%; }
+    .hero__actions .btn {
+      flex: 1 1 100%;
+      justify-content: center;
+      min-block-size: 52px;
+    }
+    .hero__scrim {
+      background: linear-gradient(
+        180deg,
+        rgba(9, 18, 30, 0.86) 0%,
+        rgba(9, 18, 30, 0.9) 60%,
+        rgba(9, 18, 30, 0.72) 100%
+      );
+    }
+  }
+</style>

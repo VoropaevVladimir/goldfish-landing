@@ -1,0 +1,71 @@
+---
+/**
+ * ЗАГЛУШКА логотипа. Реального файла в хендоффе нет — нужен SVG в двух
+ * вариантах (на светлом и на тёмном фоне). Мотив волны взят из описания
+ * логотипа.
+ */
+
+interface Props {
+  size?: number;
+  variant?: 'on-light' | 'on-dark';
+  withWordmark?: boolean;
+  class?: string;
+}
+
+const {
+  size = 40,
+  variant = 'on-light',
+  withWordmark = false,
+  class: className,
+} = Astro.props;
+---
+
+<span class:list={['logo', `logo--${variant}`, className]}>
+  <svg
+    class="logo__mark"
+    width={size}
+    height={size}
+    viewBox="0 0 40 40"
+    fill="none"
+    aria-hidden="true"
+    focusable="false"
+  >
+    <rect x="1" y="1" width="38" height="38" stroke="currentColor" stroke-width="2"></rect>
+    <path
+      d="M8 16c2-2 4-2 6 0s4 2 6 0 4-2 6 0 4 2 6 0M8 24c2-2 4-2 6 0s4 2 6 0 4-2 6 0 4 2 6 0"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"></path>
+  </svg>
+  {withWordmark && <span class="logo__wordmark">Голдфиш</span>}
+</span>
+
+<style>
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--color-ink);
+  }
+
+  .logo--on-dark { color: var(--color-dark-text); }
+
+  .logo__mark { flex: none; }
+
+  .logo__wordmark {
+    font-family: var(--font-display);
+    font-size: var(--fs-ui);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* Прячем словесный знак только там, где горизонтальному меню не хватает
+     места. Ниже 1024 меню уходит в бургер — знак снова помещается. */
+  @media (min-width: 1025px) and (max-width: 1100px) {
+    .logo__wordmark { display: none; }
+  }
+</style>

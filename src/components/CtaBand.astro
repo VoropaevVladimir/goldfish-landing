@@ -1,0 +1,113 @@
+---
+import Photo from './Photo.astro';
+import DownloadLink from './DownloadLink.astro';
+import { ctaBand } from '../data/content';
+---
+
+<section class="cta-band" aria-labelledby="cta-title">
+  <Photo photo={ctaBand.photo} class="photo--cover" sizes="100vw" />
+  <div class="cta-band__scrim" aria-hidden="true"></div>
+
+  <div class="cta-band__content container">
+    <div class="cta-band__text">
+      <h2 class="h2 cta-band__title" id="cta-title">{ctaBand.heading}</h2>
+      <p class="cta-band__body">{ctaBand.body}</p>
+      <div class="cta-band__actions">
+        <DownloadLink href="/files/price-list.xlsx" class="btn--outline cta-band__outline">
+          Получить прайс
+        </DownloadLink>
+        <a class="btn btn--primary" href="#contacts">Связаться с нами</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-band {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-block-size: clamp(340px, 40vh, 420px);
+    overflow: hidden;
+    border-block-start: var(--line-w) solid var(--color-line);
+    background: var(--color-ink);
+  }
+
+  .cta-band__scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      100deg,
+      rgba(9, 18, 30, 0.9) 0%,
+      rgba(9, 18, 30, 0.74) 38%,
+      rgba(9, 18, 30, 0.28) 68%,
+      rgba(9, 18, 30, 0.06) 100%
+    );
+  }
+
+  .cta-band__content {
+    position: relative;
+    z-index: 1;
+    padding-block: clamp(40px, 5vw, 64px);
+  }
+
+  .cta-band__text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--stack-lg);
+    max-inline-size: 620px;
+    color: var(--color-dark-text);
+  }
+
+  .cta-band__title {
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    color: #fff;
+  }
+
+  .cta-band__body {
+    max-inline-size: 44ch;
+    color: rgba(238, 242, 246, 0.82);
+  }
+
+  .cta-band__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .cta-band .btn--primary {
+    --btn-bg: #fff;
+    --btn-fg: var(--color-ink);
+    --btn-bd: #fff;
+  }
+  .cta-band .btn--primary:hover {
+    --btn-bg: var(--color-accent);
+    --btn-bd: var(--color-accent);
+    --btn-fg: #fff;
+  }
+
+  /* :global — кнопка «Получить прайс» теперь рендерится дочерним компонентом
+     DownloadLink и несёт его собственный scope-атрибут, а не cta-band's, так
+     что обычные scoped-правила её не находят. */
+  :global(.cta-band__outline) {
+    --btn-fg: var(--color-dark-text);
+    --btn-bd: var(--color-dark-text);
+  }
+  :global(.cta-band__outline:hover) {
+    --btn-bg: var(--color-dark-text);
+    --btn-fg: var(--color-dark-bg);
+  }
+
+  @media (max-width: 700px) {
+    .cta-band__scrim {
+      background: linear-gradient(180deg, rgba(9, 18, 30, 0.84), rgba(9, 18, 30, 0.9));
+    }
+    .cta-band__actions { inline-size: 100%; }
+    .cta-band__actions :global(.btn) {
+      flex: 1 1 100%;
+      justify-content: center;
+      min-block-size: 52px;
+    }
+  }
+</style>

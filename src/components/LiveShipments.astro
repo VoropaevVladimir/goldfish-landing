@@ -1,0 +1,95 @@
+---
+/**
+ * Бегущая лента реальных фото отгрузок (не постановочных, прямо с телефона).
+ * Чистый CSS-marquee: дублируем список карточек дважды и анимируем
+ * translateX до -50% — на этом кадре лента как раз стыкуется сама с собой,
+ * получается бесшовный бесконечный цикл без JS-библиотек.
+ */
+import fs from 'node:fs';
+import path from 'node:path';
+import { liveShipments } from '../data/content';
+
+const dir = path.join(process.cwd(), 'public/images/shipments');
+const files = fs
+  .readdirSync(dir)
+  .filter((file) => file.endsWith('.webp'))
+  .sort();
+const photos = [...files, ...files];
+---
+
+<section class="section shipments-section" aria-labelledby="shipments-title">
+  <div class="container shipments-head">
+    <span class="kicker">{liveShipments.kicker}</span>
+    <h2 class="h2" id="shipments-title">{liveShipments.heading}</h2>
+    <p class="prose">{liveShipments.body}</p>
+  </div>
+
+  <div class="shipments" data-marquee>
+    <div class="shipments__track">
+      {
+        photos.map((file, i) => (
+          <div class="shipments__item">
+            <img
+              src={`/images/shipments/${file}`}
+              alt="Фото реальной отгрузки продукции"
+              decoding="async"
+              aria-hidden={i >= files.length ? 'true' : undefined}
+            />
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .shipments-section { padding-block-end: 0; }
+
+  .shipments-head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--stack-md);
+    margin-block-end: clamp(24px, 3vw, 40px);
+    max-inline-size: 62ch;
+  }
+
+  .shipments {
+    overflow: hidden;
+    border-block: var(--line-w) solid var(--color-line);
+    background: var(--color-ink);
+  }
+
+  .shipments__track {
+    display: flex;
+    inline-size: max-content;
+    gap: var(--gap-hairline);
+    background: var(--color-line);
+    animation: shipments-scroll 70s linear infinite;
+  }
+
+  .shipments:hover .shipments__track { animation-play-state: paused; }
+
+  .shipments__item {
+    flex: none;
+    inline-size: clamp(140px, 16vw, 220px);
+    aspect-ratio: 3 / 4;
+    background: var(--color-surface);
+  }
+
+  .shipments__item img {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  @keyframes shipments-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .shipments__track { animation: none; }
+    .shipments { overflow-x: auto; }
+  }
+</style>

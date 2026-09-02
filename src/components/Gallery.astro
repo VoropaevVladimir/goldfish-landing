@@ -1,0 +1,47 @@
+---
+import Photo from './Photo.astro';
+import { gallery } from '../data/content';
+
+const [feature, wide, small1, small2] = gallery;
+---
+
+<section class="section" id="gallery" aria-labelledby="gallery-title">
+  <div class="container">
+    <h2 class="kicker gallery__title" id="gallery-title">Галерея</h2>
+
+    <div class="gallery">
+      <Photo photo={feature} class="gallery__feature" sizes="(max-width: 700px) 100vw, 50vw" reveal />
+      <Photo photo={wide} class="gallery__wide" sizes="(max-width: 700px) 100vw, 50vw" reveal />
+      <Photo photo={small1} class="gallery__small" sizes="(max-width: 700px) 50vw, 25vw" reveal />
+      <Photo photo={small2} class="gallery__small" sizes="(max-width: 700px) 50vw, 25vw" reveal />
+    </div>
+  </div>
+</section>
+
+<style>
+  .gallery__title { margin-block-end: clamp(20px, 2.4vw, 28px); }
+
+  .gallery {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: clamp(180px, 18vw, 230px) clamp(130px, 13vw, 165px);
+    gap: var(--gap-gallery);
+  }
+
+  /* :global — scoped-атрибут Astro не попадает на корневой элемент дочернего
+     компонента, поэтому классы, отданные в <Photo>, адресуем явно. */
+  .gallery > :global(.gallery__feature) { grid-row: span 2; }
+  .gallery > :global(.gallery__wide) { grid-column: span 2; }
+
+  @media (max-width: 700px) {
+    .gallery {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-rows: 200px 150px 150px;
+    }
+    .gallery > :global(.gallery__feature) {
+      grid-row: span 1;
+      grid-column: span 2;
+    }
+    .gallery > :global(.gallery__wide) { grid-column: span 2; }
+  }
+</style>

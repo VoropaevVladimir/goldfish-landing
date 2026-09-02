@@ -1,0 +1,107 @@
+---
+import Logo from './Logo.astro';
+import { footerNav, site, legal } from '../data/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="footer section--dark">
+  <div class="container footer__inner">
+    <div class="footer__brand">
+      <Logo size={40} variant="on-dark" />
+      <p class="footer__about">
+        {site.name} — {site.tagline.toLowerCase()}. Производство и поставки оптом.
+      </p>
+
+      <address class="footer__requisites">
+        <p>© {year} {site.legalName}</p>
+        <p>{legal.fullName}</p>
+        <p>ОГРНИП {legal.ogrnip} · ИНН {legal.inn}</p>
+        <p>{legal.address}</p>
+      </address>
+    </div>
+
+    <nav class="footer__nav" aria-label="Навигация в подвале">
+      <ul class="footer__links">
+        {
+          footerNav.map((item) => (
+            <li>
+              <a class="footer__link" href={item.href}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+  </div>
+</footer>
+
+<style>
+  .footer {
+    padding-block: clamp(36px, 4vw, 56px);
+    border-block-start: var(--line-w) solid var(--color-line);
+  }
+
+  .footer__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 30fr) minmax(0, 52fr);
+    gap: var(--gap-blocks);
+    align-items: start;
+  }
+
+  .footer__brand {
+    display: flex;
+    flex-direction: column;
+    gap: var(--stack-md);
+  }
+
+  .footer__about {
+    font-size: var(--fs-small);
+    line-height: 1.5;
+    color: var(--color-dark-muted);
+  }
+
+  /* Юридические реквизиты: мельче основного текста подвала — справочная
+     информация, а не то, что должно тянуть на себя внимание. */
+  .footer__requisites {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    font-style: normal;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    color: var(--color-dark-muted);
+    opacity: 0.85;
+  }
+
+  .footer__requisites p { margin: 0; }
+
+  .footer__links {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px 24px;
+  }
+
+  .footer__link {
+    font-size: var(--fs-ui);
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--color-dark-text);
+  }
+  .footer__link:hover { color: var(--color-accent-on-dark); }
+
+  @media (max-width: 900px) {
+    .footer__inner {
+      grid-template-columns: minmax(0, 1fr);
+      gap: clamp(28px, 5vw, 40px);
+    }
+  }
+
+  @media (max-width: 700px) {
+    .footer__links { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+</style>

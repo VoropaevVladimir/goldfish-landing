@@ -1,0 +1,13 @@
+node_modules/
+dist/
+dist.zip
+.astro/
+.env
+.env.production
+.DS_Store
+
+# Сырые/промежуточные фото — рабочий материал, не часть сайта.
+# См. README: готовые кадры лежат в public/images.
+raw-photos/
+
+.claude/

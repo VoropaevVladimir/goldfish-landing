@@ -1,0 +1,72 @@
+---
+import DownloadLink from './DownloadLink.astro';
+import { wholesale } from '../data/content';
+---
+
+<section class="section section--dark" id="wholesale" aria-labelledby="wholesale-title">
+  <div class="container wholesale">
+    <div class="wholesale__text">
+      <span class="kicker">{wholesale.kicker}</span>
+      <h2 class="h2" id="wholesale-title">{wholesale.heading}</h2>
+      <p class="prose">{wholesale.body}</p>
+      <DownloadLink href="/files/price-list.xlsx" class="btn--on-dark wholesale__cta">
+        {wholesale.cta}
+      </DownloadLink>
+    </div>
+
+    <ul class="wholesale__points">
+      {wholesale.points.map((point) => <li class="h3" data-reveal>{point}</li>)}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .wholesale {
+    display: grid;
+    grid-template-columns: minmax(0, 43fr) minmax(0, 57fr);
+    gap: var(--gap-blocks);
+    align-items: center;
+  }
+
+  .wholesale__text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--stack-lg);
+  }
+
+  /* :global — кнопка теперь рендерится дочерним компонентом DownloadLink и
+     несёт его собственный scope-атрибут, обычное scoped-правило её не найдёт. */
+  :global(.wholesale__cta) { margin-block-start: 6px; }
+
+  .wholesale__points {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--stack-lg) var(--gap-cols);
+  }
+
+  .wholesale__points li { position: relative; padding-inline-start: 26px; }
+
+  .wholesale__points li::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-start: 0.45em;
+    inline-size: 12px;
+    block-size: var(--line-w);
+    background: var(--color-accent-on-dark);
+  }
+
+  @media (max-width: 900px) {
+    .wholesale { grid-template-columns: minmax(0, 1fr); }
+  }
+
+  @media (max-width: 700px) {
+    .wholesale__points { grid-template-columns: minmax(0, 1fr); }
+    :global(.wholesale__cta) {
+      inline-size: 100%;
+      justify-content: center;
+      min-block-size: 52px;
+    }
+  }
+</style>

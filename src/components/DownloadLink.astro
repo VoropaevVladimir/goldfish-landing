@@ -1,0 +1,47 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  href: string;
+  class?: string;
+}
+
+const { href, class: className } = Astro.props;
+---
+
+<a class:list={['btn', className]} href={href} download data-download-btn>
+  <span class="download-icon">
+    <Icon name="download" size={18} class="download-icon__glyph download-icon__glyph--download" />
+    <Icon name="check" size={18} class="download-icon__glyph download-icon__glyph--check" />
+  </span>
+  <slot />
+</a>
+
+<style is:global>
+  .download-icon {
+    position: relative;
+    display: inline-grid;
+    place-items: center;
+    inline-size: 18px;
+    block-size: 18px;
+    flex: none;
+  }
+
+  .download-icon__glyph {
+    grid-area: 1 / 1;
+    transition:
+      opacity var(--dur) var(--ease),
+      transform var(--dur) var(--ease);
+  }
+
+  .download-icon__glyph--check { opacity: 0; transform: scale(0.5); }
+
+  [data-download-btn].is-downloaded .download-icon__glyph--download {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  [data-download-btn].is-downloaded .download-icon__glyph--check {
+    opacity: 1;
+    transform: scale(1);
+  }
+</style>
