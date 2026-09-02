@@ -109,6 +109,7 @@ export const products: Product[] = [
     description: 'Умеренная жирность и спокойный дым. Универсальный вариант для стола.',
     photo: {
       src: '/images/gorbusha.jpg',
+      srcWebp: '/images/gorbusha.webp',
       alt: 'Филе горбуши холодного копчения на деревянной доске с укропом',
       spec: 'горбуша, кадр 4:3',
     },
@@ -120,6 +121,7 @@ export const products: Product[] = [
     description: 'Жирная, ароматная, с плотной кожей. Тот самый вкус копчёной скумбрии.',
     photo: {
       src: '/images/skumbriya.jpg',
+      srcWebp: '/images/skumbriya.webp',
       alt: 'Скумбрия холодного копчения на деревянной доске с укропом',
       spec: 'скумбрия, кадр 4:3',
     },
@@ -131,6 +133,7 @@ export const products: Product[] = [
     description: 'Выдержанный засол и мягкое копчение. Простой и понятный продукт.',
     photo: {
       src: '/images/seld.jpg',
+      srcWebp: '/images/seld.webp',
       alt: 'Филе сельди холодного копчения на деревянной доске с укропом',
       spec: 'сельдь, кадр 4:3',
     },
@@ -142,6 +145,7 @@ export const products: Product[] = [
     description: 'Готовы обсудить позиции под ваш запрос — по объёму и срокам.',
     photo: {
       src: '/images/drugie-vidy.jpg',
+      srcWebp: '/images/drugie-vidy.webp',
       alt: 'Ассортимент рыбы холодного копчения на деревянной доске',
       spec: 'ассорти / витрина, кадр 4:3',
     },
@@ -211,6 +215,7 @@ export const liveShipments = {
 export const gallery: PhotoSpec[] = [
   {
     src: '/images/gallery-1.jpg',
+    srcWebp: '/images/gallery-1.webp',
     alt: 'Готовая рыба холодного копчения крупным планом',
     spec: 'готовая рыба, крупный план',
   },
