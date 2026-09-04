@@ -4,12 +4,23 @@ import Icon from './Icon.astro';
 interface Props {
   href: string;
   class?: string;
+  /** false — открыть в новой вкладке (PDF и т.п. умеют показываться сами
+   *  в браузере), true — принудительно скачать (нужно для форматов вроде
+   *  .xlsx, которые браузер отобразить не может). По умолчанию — открыть. */
+  download?: boolean;
 }
 
-const { href, class: className } = Astro.props;
+const { href, class: className, download = false } = Astro.props;
 ---
 
-<a class:list={['btn', className]} href={href} download data-download-btn>
+<a
+  class:list={['btn', className]}
+  href={href}
+  download={download ? true : undefined}
+  target={download ? undefined : '_blank'}
+  rel={download ? undefined : 'noopener'}
+  data-download-btn
+>
   <span class="download-icon">
     <Icon name="download" size={18} class="download-icon__glyph download-icon__glyph--download" />
     <Icon name="check" size={18} class="download-icon__glyph download-icon__glyph--check" />
